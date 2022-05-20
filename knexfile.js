@@ -3,28 +3,33 @@
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
-module.exports = {
 
+const sharedConfig = {
+  client: 'sqlite3',
+  migrations: {
+    directory: "./data/migrations"
+  },
+  seeds: {
+    directory: "./data/seeds"
+  },
+  useNullAsDefault: true,
+  pool: {
+    afterCreate: 
+    (conn, done) => conn.run("PRAGMA foreign_keys = ON", done)
+  }
+}
+
+module.exports = {
   development: {
-    client: 'sqlite3',
-    useNullAsDefault: true,
-    migrations: {
-      directory: "./data/migrations"
-    },
+    ...sharedConfig,
     connection: {
       filename: './data/cook_book.db3'
-    },
-    seeds: {
-      directory: "./data/seeds"
-    },
-    testing: {
-      connection: { filename: "./data/cook_book.test.db3" }
-    },
-    pool: {
-      afterCreate: 
-      (conn, done) => conn.run("PRAGMA foreign_keys = ON", done)
     }
   },
-
+  testing: {
+    ...sharedConfig,
+    connection: { filename: "./data/cook_book.test.db3" }
+  },
+  production: {}
 };
 

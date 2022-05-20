@@ -46,7 +46,6 @@ const steps = [
 ]
 
 exports.seed = async function(knex){
-    //* inject knex obj to insert these tables when they're called
     await knex("recipes").insert(recipes)
     await knex("ingredients").insert(ingredients)
     await knex("steps").insert(steps)
