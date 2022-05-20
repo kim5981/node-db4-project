@@ -17,8 +17,19 @@ exports.up = async function(knex) {
         tbl.string("ingredient_unit", 5)
     })
     .createTable("steps", tbl => {
-        tbl.increments() // auto-generates a unique id column
-    })
+        tbl.increments("step_id")
+        tbl.string("step_text", 200)
+            .notNullable()
+        tbl.integer("step_number") // new column of integers w/ that title
+            .notNullable()
+        tbl.integer("recipe_id") // new column ..
+            .unsigned() // cannot be negative
+            .notNullable()
+            .references("recipe_id") // this is what it links to
+            .inTable("recipes")
+            .onDelete("RESTRICT")
+            .onUpdate("RESTRICT")
+    })  
     .createTable("step_ingredients", tbl => {
         tbl.increments() // auto-generates a unique id column
     })
